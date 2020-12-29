@@ -1,0 +1,26 @@
+{
+    "name": "lucho/trivia",
+    "description": "Trivia game kata for php",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Luciano Thoma",
+            "email": "luchothoma@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Trivia\\": "src/",
+            "Test\\": "test/"
+        }
+    },
+    "scripts": {
+        "run-test": "sh vendor/bin/phpunit",
+        "run-test-details": "sh vendor/bin/phpunit --verbose"
+    }
+}
