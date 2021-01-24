@@ -3,11 +3,7 @@ namespace Trivia;
 
 use Trivia\Game\Game;
 use Trivia\Game\Printer\IPrinter;
-use Trivia\Game\Printer\EmptyPrinter;
-use Trivia\Game\Printer\DefaultPrinter;
 use Trivia\IRandomGameRunnerDataObtainer;
-
-require_once __DIR__."/../vendor/autoload.php";
 
 class GameRunner {
     private $gameDataObtainer = null;
@@ -43,12 +39,3 @@ class GameRunner {
         } while ($notAWinner);
     }
 }
-
-$playersName = ["Chet", "Pat", "Sue", "Lucho"];
-$aGameRunner = new GameRunner( 
-    new EmptyPrinter(),
-    new DefaultPrinter(),
-    new RandomGameRunnerDataObtainer(),
-    ...$playersName
-);
-$aGameRunner->run();
