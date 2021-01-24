@@ -1,11 +1,14 @@
 <?php
 namespace Trivia;
 
-use Trivia\Game;
+use Trivia\Game\Game;
+use Trivia\Game\Printer\DefaultPrinter;
+
+require_once __DIR__."/../vendor/autoload.php";
 
 $notAWinner;
-
-$aGame = new Game();
+$aDefaultPrinter = new DefaultPrinter();
+$aGame = new Game($aDefaultPrinter);
 
 $aGame->add("Chet");
 $aGame->add("Pat");
