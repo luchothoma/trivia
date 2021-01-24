@@ -4,27 +4,64 @@ namespace Trivia;
 use Trivia\Game\Game;
 use Trivia\Game\Printer\DefaultPrinter;
 use Trivia\Game\Printer\EmptyPrinter;
+use Trivia\Game\Printer\IPrinter;
 
 require_once __DIR__."/../vendor/autoload.php";
 
-$notAWinner;
-$aDefaultPrinter = new DefaultPrinter();
-$anEmptyPrinter = new EmptyPrinter();
-$aGame = new Game($anEmptyPrinter);
+interface IRandomGameRunnerDataObtainer {
+    public function rollValue() :int;
+    public function isAnswerWrong() :bool;
+}
+
+class RandomGameRunnerDataObtainer implements IRandomGameRunnerDataObtainer {
+    public function rollValue() :int {
+        return rand(0,5) + 1;
+    }
+    public function isAnswerWrong() :bool {
+        return rand(0,9) == 7;
+    }
+}
+
+class GameRunner {
+    private $gameDataObtainer = null;
+    private $game = null;
+    private $printer = null;
+
+    public function __construct(
+        IPrinter $gamePrinter,
+        IPrinter $gameRunnerPrinter,
+        IRandomGameRunnerDataObtainer $gameDataObtainer,
+        string ...$playersName
+    ) {
+        $this->printer = $gameRunnerPrinter;
+        $this->gameDataObtainer = $gameDataObtainer;
+        $game = new Game($gamePrinter);
+        array_walk($playersName, function($playerName) use($game){ $game->add($playerName); });
+        $this->game = $game;
+    }
+
+    public function run() :void {               
+        do {
+            $roll = $this->gameDataObtainer->rollValue();
+            $this->printer->echoln("Roll: ".$roll);
+            $this->game->roll($roll);
+
+            $isAnswerWrong = $this->gameDataObtainer->isAnswerWrong();
+            $this->printer->echoln("AnswerIsWrong: ".($isAnswerWrong? 'true': 'false'));
+            if ($isAnswerWrong) {
+                $notAWinner = $this->game->wrongAnswer();
+            } else {
+                $notAWinner = $this->game->wasCorrectlyAnswered();
+            }
+        } while ($notAWinner);
+    }
+}
 
 $playersName = ["Chet", "Pat", "Sue"];
-array_walk($playersName, function($playerName) use($aGame){ $aGame->add($playerName); });
-
-do {
-    $roll = rand(0,5) + 1;
-    $aDefaultPrinter->echoln("Roll: ".$roll);
-    $aGame->roll(rand(0,5) + 1);
-
-    $isAnswerWrong = rand(0,9) == 7;
-    $aDefaultPrinter->echoln("AnswerIsWrong: ".($isAnswerWrong? 'true': 'false'));
-    if ($isAnswerWrong) {
-        $notAWinner = $aGame->wrongAnswer();
-    } else {
-        $notAWinner = $aGame->wasCorrectlyAnswered();
-    }
-} while ($notAWinner);
+$aGameRunner = new GameRunner( 
+    new EmptyPrinter(),
+    new DefaultPrinter(),
+    new RandomGameRunnerDataObtainer(),
+    ...$playersName
+);
+$aGameRunner->run();
