@@ -3,24 +3,28 @@ namespace Trivia;
 
 use Trivia\Game\Game;
 use Trivia\Game\Printer\DefaultPrinter;
+use Trivia\Game\Printer\EmptyPrinter;
 
 require_once __DIR__."/../vendor/autoload.php";
 
 $notAWinner;
 $aDefaultPrinter = new DefaultPrinter();
-$aGame = new Game($aDefaultPrinter);
+$anEmptyPrinter = new EmptyPrinter();
+$aGame = new Game($anEmptyPrinter);
 
-$aGame->add("Chet");
-$aGame->add("Pat");
-$aGame->add("Sue");
+$playersName = ["Chet", "Pat", "Sue"];
+array_walk($playersName, function($playerName) use($aGame){ $aGame->add($playerName); });
 
 do {
+    $roll = rand(0,5) + 1;
+    $aDefaultPrinter->echoln("Roll: ".$roll);
     $aGame->roll(rand(0,5) + 1);
 
-    if (rand(0,9) == 7) {
-    $notAWinner = $aGame->wrongAnswer();
+    $isAnswerWrong = rand(0,9) == 7;
+    $aDefaultPrinter->echoln("AnswerIsWrong: ".($isAnswerWrong? 'true': 'false'));
+    if ($isAnswerWrong) {
+        $notAWinner = $aGame->wrongAnswer();
     } else {
-    $notAWinner = $aGame->wasCorrectlyAnswered();
+        $notAWinner = $aGame->wasCorrectlyAnswered();
     }
 } while ($notAWinner);
-  
