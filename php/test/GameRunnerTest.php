@@ -24,15 +24,15 @@ final class GameRunnerTest extends TestCase
     public function testGame(array $players, array $rollValues, array $isAnswerWrongValues): void {
         $gameDataObtainer = $this->gameDataObtainerUsingThisData($rollValues, $isAnswerWrongValues); 
         $anEmptyPrinterForGameRunner = new EmptyPrinter();
-        $aStringCollectorPrinterForGameOuput = new StringCollectorPrinter();
+        $aStringCollectorPrinterForGameOutput = new StringCollectorPrinter();
         $aGameRunner = new GameRunner(
-            $aStringCollectorPrinterForGameOuput,
+            $aStringCollectorPrinterForGameOutput,
             $anEmptyPrinterForGameRunner,
             $gameDataObtainer,
             ...$players
         );
         $aGameRunner->run();
-        $this->assertEquals("", $aStringCollectorPrinterForGameOuput->collectedString());
+        $this->assertEquals("", $aStringCollectorPrinterForGameOutput->collectedString());
     }
 
     private function gameDataObtainerUsingThisData(array $rollValues, array $isAnswerWrongValues) : IRandomGameRunnerDataObtainer {
