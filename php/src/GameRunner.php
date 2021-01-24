@@ -2,25 +2,12 @@
 namespace Trivia;
 
 use Trivia\Game\Game;
-use Trivia\Game\Printer\DefaultPrinter;
-use Trivia\Game\Printer\EmptyPrinter;
 use Trivia\Game\Printer\IPrinter;
+use Trivia\Game\Printer\EmptyPrinter;
+use Trivia\Game\Printer\DefaultPrinter;
+use Trivia\IRandomGameRunnerDataObtainer;
 
 require_once __DIR__."/../vendor/autoload.php";
-
-interface IRandomGameRunnerDataObtainer {
-    public function rollValue() :int;
-    public function isAnswerWrong() :bool;
-}
-
-class RandomGameRunnerDataObtainer implements IRandomGameRunnerDataObtainer {
-    public function rollValue() :int {
-        return rand(0,5) + 1;
-    }
-    public function isAnswerWrong() :bool {
-        return rand(0,9) == 7;
-    }
-}
 
 class GameRunner {
     private $gameDataObtainer = null;
@@ -57,7 +44,7 @@ class GameRunner {
     }
 }
 
-$playersName = ["Chet", "Pat", "Sue"];
+$playersName = ["Chet", "Pat", "Sue", "Lucho"];
 $aGameRunner = new GameRunner( 
     new EmptyPrinter(),
     new DefaultPrinter(),
