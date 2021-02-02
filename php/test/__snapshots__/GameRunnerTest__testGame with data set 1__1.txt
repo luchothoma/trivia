@@ -1,0 +1,130 @@
+Lucho was added
+They are player number 1
+Gustavo was added
+They are player number 2
+Lucho is the current player
+They have rolled a 2
+Lucho's new location is 2
+The category is Sports
+Sports Question 0
+Question was incorrectly answered
+Lucho was sent to the penalty box
+Gustavo is the current player
+They have rolled a 1
+Gustavo's new location is 1
+The category is Science
+Science Question 0
+Question was incorrectly answered
+Gustavo was sent to the penalty box
+Lucho is the current player
+They have rolled a 4
+Lucho is not getting out of the penalty box
+Gustavo is the current player
+They have rolled a 5
+Gustavo is getting out of the penalty box
+Gustavo's new location is 6
+The category is Sports
+Sports Question 1
+Answer was correct!!!!
+Gustavo now has 1 Gold Coins.
+Lucho is the current player
+They have rolled a 6
+Lucho is not getting out of the penalty box
+Gustavo is the current player
+They have rolled a 5
+Gustavo is getting out of the penalty box
+Gustavo's new location is 11
+The category is Rock
+Rock Question 0
+Answer was correct!!!!
+Gustavo now has 2 Gold Coins.
+Lucho is the current player
+They have rolled a 6
+Lucho is not getting out of the penalty box
+Gustavo is the current player
+They have rolled a 1
+Gustavo is getting out of the penalty box
+Gustavo's new location is 0
+The category is Pop
+Pop Question 0
+Answer was correct!!!!
+Gustavo now has 3 Gold Coins.
+Lucho is the current player
+They have rolled a 4
+Lucho is not getting out of the penalty box
+Gustavo is the current player
+They have rolled a 3
+Gustavo is getting out of the penalty box
+Gustavo's new location is 3
+The category is Rock
+Rock Question 1
+Answer was correct!!!!
+Gustavo now has 4 Gold Coins.
+Lucho is the current player
+They have rolled a 4
+Lucho is not getting out of the penalty box
+Gustavo is the current player
+They have rolled a 2
+Gustavo is not getting out of the penalty box
+Question was incorrectly answered
+Gustavo was sent to the penalty box
+Lucho is the current player
+They have rolled a 4
+Lucho is not getting out of the penalty box
+Gustavo is the current player
+They have rolled a 6
+Gustavo is not getting out of the penalty box
+Lucho is the current player
+They have rolled a 1
+Lucho is getting out of the penalty box
+Lucho's new location is 3
+The category is Rock
+Rock Question 2
+Answer was correct!!!!
+Lucho now has 1 Gold Coins.
+Gustavo is the current player
+They have rolled a 6
+Gustavo is not getting out of the penalty box
+Lucho is the current player
+They have rolled a 4
+Lucho is not getting out of the penalty box
+Gustavo is the current player
+They have rolled a 5
+Gustavo is getting out of the penalty box
+Gustavo's new location is 8
+The category is Pop
+Pop Question 1
+Answer was correct!!!!
+Gustavo now has 5 Gold Coins.
+Lucho is the current player
+They have rolled a 5
+Lucho is getting out of the penalty box
+Lucho's new location is 8
+The category is Pop
+Pop Question 2
+Answer was correct!!!!
+Lucho now has 2 Gold Coins.
+Gustavo is the current player
+They have rolled a 1
+Gustavo is getting out of the penalty box
+Gustavo's new location is 9
+The category is Science
+Science Question 1
+Question was incorrectly answered
+Gustavo was sent to the penalty box
+Lucho is the current player
+They have rolled a 5
+Lucho is getting out of the penalty box
+Lucho's new location is 1
+The category is Science
+Science Question 2
+Answer was correct!!!!
+Lucho now has 3 Gold Coins.
+Gustavo is the current player
+They have rolled a 5
+Gustavo is getting out of the penalty box
+Gustavo's new location is 2
+The category is Sports
+Sports Question 2
+Answer was correct!!!!
+Gustavo now has 6 Gold Coins.

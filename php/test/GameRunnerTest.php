@@ -4,17 +4,29 @@ namespace Test;
 use Trivia\GameRunner;
 use PHPUnit\Framework\TestCase;
 use Trivia\Game\Printer\EmptyPrinter;
-use Trivia\Game\Printer\StringCollectorPrinter;
+use Spatie\Snapshots\MatchesSnapshots;
 use Trivia\IRandomGameRunnerDataObtainer;
+use Trivia\Game\Printer\StringCollectorPrinter;
 
-final class GameRunnerTest extends TestCase
-{
+final class GameRunnerTest extends TestCase {
+    use MatchesSnapshots;
+
     public function possibleGameCasesDataProvider() :array {
         return [
             [
                 ["Chet", "Pat", "Sue", "Lucho"],
                 [1, 5, 1, 2, 5, 2, 2, 5, 3, 1, 4, 6, 6, 5, 2, 5, 5, 1, 5, 4, 4],
                 [false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, true, false, false]
+            ],
+            [
+                ["Lucho", "Gustavo"],
+                [2, 1, 4, 5, 6, 5, 6, 1, 4, 3, 4, 2, 4, 6, 1, 6, 4, 5, 5, 1, 5, 5],
+                [true, true, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, true, false, false]
+            ],
+            [
+                ["Tylor", "Jhon", "Leandro"],
+                [6, 4, 6, 1, 1, 1, 5, 4, 6, 1, 6, 2, 2, 3, 4, 1, 6],
+                [false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false]
             ],
         ];
     }
@@ -32,29 +44,17 @@ final class GameRunnerTest extends TestCase
             ...$players
         );
         $aGameRunner->run();
-        $this->assertEquals("", $aStringCollectorPrinterForGameOutput->collectedString());
+        $this->assertMatchesTextSnapshot($aStringCollectorPrinterForGameOutput->collectedString());
     }
 
     private function gameDataObtainerUsingThisData(array $rollValues, array $isAnswerWrongValues) : IRandomGameRunnerDataObtainer {
-        return new class ($rollValues, $isAnswerWrongValues) implements IRandomGameRunnerDataObtainer {
-            private $rollValues;
-            private $rollCount = 0;
-            private $isAnswerWrongValues;
-            private $isAnswerWrongCount = 0;
-            public function __construct($rollValues, $isAnswerWrongValues) {
-                $this->rollValues = $rollValues;
-                $this->isAnswerWrongValues = $isAnswerWrongValues;
-            }
-            public function rollValue() :int {
-                $rollValue = $this->rollValues[$this->rollCount];
-                $this->rollCount++;
-                return $rollValue;
-            }
-            public function isAnswerWrong() :bool {
-                $isAnswerWringValue = $this->isAnswerWrongValues[$this->isAnswerWrongCount];
-                $this->isAnswerWrongCount++;
-                return $isAnswerWringValue;
-            }
-        };
+        $gameDataObtainer = $this->createMock(IRandomGameRunnerDataObtainer::class);
+        $gameDataObtainer->expects($this->exactly(count($rollValues)))
+            ->method('rollValue')
+            ->willReturnOnConsecutiveCalls(...$rollValues);
+        $gameDataObtainer->expects($this->exactly(count($isAnswerWrongValues)))
+            ->method('isAnswerWrong')
+            ->willReturnOnConsecutiveCalls(...$isAnswerWrongValues);
+        return $gameDataObtainer;
     }
 }
