@@ -48,7 +48,7 @@ class Game {
     	}
     }
 
-	public function isPlayable() {
+	public function isPlayable() :bool {
 		return ($this->howManyPlayers() >= 2);
 	}
 
@@ -61,44 +61,42 @@ class Game {
         $this->printer->echoln("They are player number " . count($this->players));
 	}
 
-	function howManyPlayers() {
+	private function howManyPlayers() :int {
 		return count($this->players);
 	}
 
-	function  roll($roll) {
+	public function roll($roll) :void {
 		$this->printer->echoln($this->players[$this->currentPlayer] . " is the current player");
 		$this->printer->echoln("They have rolled a " . $roll);
 
-		if ($this->inPenaltyBox[$this->currentPlayer]) {
-			if ($roll % 2 != 0) {
-				$this->isGettingOutOfPenaltyBox = true;
-
-				$this->printer->echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
-			$this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-				if ($this->places[$this->currentPlayer] > 11) $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
-
-				$this->printer->echoln($this->players[$this->currentPlayer]
-						. "'s new location is "
-						.$this->places[$this->currentPlayer]);
-				$this->printer->echoln("The category is " . $this->currentCategory());
-				$this->askQuestion();
-			} else {
-				$this->printer->echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
-				$this->isGettingOutOfPenaltyBox = false;
-				}
-
-		} else {
-
-		$this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-			if ($this->places[$this->currentPlayer] > 11) $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
-
+		if (!$this->inPenaltyBox[$this->currentPlayer]) {
+            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
+			if ($this->places[$this->currentPlayer] > 11) {
+                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+            }
 			$this->printer->echoln($this->players[$this->currentPlayer]
 					. "'s new location is "
 					.$this->places[$this->currentPlayer]);
 			$this->printer->echoln("The category is " . $this->currentCategory());
-			$this->askQuestion();
-		}
+            $this->askQuestion();
+            return;
+        }
+        if ($roll % 2 != 0) {
+            $this->isGettingOutOfPenaltyBox = true;
 
+            $this->printer->echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
+            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
+            if ($this->places[$this->currentPlayer] > 11) $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+
+            $this->printer->echoln($this->players[$this->currentPlayer]
+                    . "'s new location is "
+                    .$this->places[$this->currentPlayer]);
+            $this->printer->echoln("The category is " . $this->currentCategory());
+            $this->askQuestion();
+            return;
+        }
+        $this->printer->echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
+        $this->isGettingOutOfPenaltyBox = false;            
 	}
 
 	private function askQuestion() :void {
@@ -127,7 +125,7 @@ class Game {
         }
     }
 
-	public function wasCorrectlyAnswered() {
+	public function wasCorrectlyAnswered() :bool {
 		if (!$this->inPenaltyBox[$this->currentPlayer]) {
             $this->printer->echoln("Answer was corrent!!!!");
             $this->purses[$this->currentPlayer]++;
@@ -155,7 +153,7 @@ class Game {
         return true;
     }
         
-	public function wrongAnswer(){
+	public function wrongAnswer() :bool {
 		$this->printer->echoln("Question was incorrectly answered");
 		$this->printer->echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
 	    $this->inPenaltyBox[$this->currentPlayer] = true;
