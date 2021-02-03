@@ -120,41 +120,39 @@ class Game {
         }
 	}
 
-	function wasCorrectlyAnswered() {
-		if ($this->inPenaltyBox[$this->currentPlayer]){
-			if ($this->isGettingOutOfPenaltyBox) {
-				$this->printer->echoln("Answer was correct!!!!");
+    private function moveToNextPlayerTurn() :void {
+        $this->currentPlayer++;
+        if ($this->currentPlayer == count($this->players)) {
+            $this->currentPlayer = 0;
+        }
+    }
+
+	public function wasCorrectlyAnswered() {
+		if (!$this->inPenaltyBox[$this->currentPlayer]) {
+            $this->printer->echoln("Answer was corrent!!!!");
+            $this->purses[$this->currentPlayer]++;
+            $this->printer->echoln($this->players[$this->currentPlayer]
+                    . " now has "
+                    .$this->purses[$this->currentPlayer]
+                    . " Gold Coins.");    
+            $winner = $this->didPlayerWin();
+            $this->moveToNextPlayerTurn();
+            return $winner;
+        }
+        if ($this->isGettingOutOfPenaltyBox) {
+            $this->printer->echoln("Answer was correct!!!!");
 			$this->purses[$this->currentPlayer]++;
-				$this->printer->echoln($this->players[$this->currentPlayer]
-						. " now has "
-						.$this->purses[$this->currentPlayer]
-						. " Gold Coins.");
+            $this->printer->echoln($this->players[$this->currentPlayer]
+                    . " now has "
+                    .$this->purses[$this->currentPlayer]
+                    . " Gold Coins.");
 
-				$winner = $this->didPlayerWin();
-                $this->currentPlayer++;
-				if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
-
-                return $winner;
-			} else {
-                $this->currentPlayer++;
-				if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
-				return true;
-			}
-		} else {
-
-			$this->printer->echoln("Answer was corrent!!!!");
-		$this->purses[$this->currentPlayer]++;
-			$this->printer->echoln($this->players[$this->currentPlayer]
-					. " now has "
-					.$this->purses[$this->currentPlayer]
-					. " Gold Coins.");
-
-			$winner = $this->didPlayerWin();
-			$this->currentPlayer++;
-			if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
-
-			return $winner;
-		}
+            $winner = $this->didPlayerWin();
+            $this->moveToNextPlayerTurn();
+            return $winner;
+        }
+        $this->moveToNextPlayerTurn();
+        return true;
     }
         
 	public function wrongAnswer(){
@@ -162,8 +160,7 @@ class Game {
 		$this->printer->echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
 	    $this->inPenaltyBox[$this->currentPlayer] = true;
 
-        $this->currentPlayer++;
-		if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
+        $this->moveToNextPlayerTurn();
 		return true;
 	}
 
