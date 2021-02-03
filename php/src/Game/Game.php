@@ -2,19 +2,23 @@
 namespace Trivia\Game;
 
 use Trivia\Game\Printer\IPrinter;
+use Trivia\Game\Question\QuestionType;
+use Trivia\Game\Question\QuestionMaker;
 
 class Game {
+    private const SCORE_TO_WIN_GAME = 6;
+
     private $printer = null;
 
-    private $players;
+    private $players = [];
     private $places;
     private $purses ;
     private $inPenaltyBox ;
 
-    private $popQuestions;
-    private $scienceQuestions;
-    private $sportsQuestions;
-    private $rockQuestions;
+    private $popQuestions = [];
+    private $scienceQuestions = [];
+    private $sportsQuestions = [];
+    private $rockQuestions = [];
 
     private $currentPlayer = 0;
     private $isGettingOutOfPenaltyBox;
@@ -27,41 +31,34 @@ class Game {
     }
 
     private function initialize() :void {
-        $this->players = array();
         $this->places = array(0);
         $this->purses  = array(0);
         $this->inPenaltyBox  = array(0);
+        $this->initializeQuestions();
+    }
 
-        $this->popQuestions = array();
-        $this->scienceQuestions = array();
-        $this->sportsQuestions = array();
-        $this->rockQuestions = array();
-
+    private function initializeQuestions() :void {
         for ($i = 0; $i < 50; $i++) {
-			array_push($this->popQuestions, "Pop Question " . $i);
-			array_push($this->scienceQuestions, ("Science Question " . $i));
-			array_push($this->sportsQuestions, ("Sports Question " . $i));
-			array_push($this->rockQuestions, $this->createRockQuestion($i));
+            $questionNumber = $i;
+            $questionContent = " Question {$questionNumber}";
+			array_push($this->popQuestions, QuestionMaker::create(QuestionType::Pop(), $questionContent));
+			array_push($this->scienceQuestions, QuestionMaker::create(QuestionType::Science(), $questionContent));
+			array_push($this->sportsQuestions, QuestionMaker::create(QuestionType::Sports(), $questionContent));
+			array_push($this->rockQuestions, QuestionMaker::create(QuestionType::Rock(), $questionContent));
     	}
     }
 
-	function createRockQuestion($index){
-		return "Rock Question " . $index;
-	}
-
-	function isPlayable() {
+	public function isPlayable() {
 		return ($this->howManyPlayers() >= 2);
 	}
 
-	function add($playerName) {
-	   array_push($this->players, $playerName);
-	   $this->places[$this->howManyPlayers()] = 0;
-	   $this->purses[$this->howManyPlayers()] = 0;
-	   $this->inPenaltyBox[$this->howManyPlayers()] = false;
-
-	    $this->printer->echoln($playerName . " was added");
-	    $this->printer->echoln("They are player number " . count($this->players));
-		return true;
+	public function add($playerName) :void {
+        array_push($this->players, $playerName);
+        $this->places[$this->howManyPlayers()] = 0;
+        $this->purses[$this->howManyPlayers()] = 0;
+        $this->inPenaltyBox[$this->howManyPlayers()] = false;
+        $this->printer->echoln($playerName . " was added");
+        $this->printer->echoln("They are player number " . count($this->players));
 	}
 
 	function howManyPlayers() {
@@ -104,29 +101,23 @@ class Game {
 
 	}
 
-	function  askQuestion() {
-		if ($this->currentCategory() == "Pop")
-			$this->printer->echoln(array_shift($this->popQuestions));
-		if ($this->currentCategory() == "Science")
-			$this->printer->echoln(array_shift($this->scienceQuestions));
-		if ($this->currentCategory() == "Sports")
-			$this->printer->echoln(array_shift($this->sportsQuestions));
-		if ($this->currentCategory() == "Rock")
-			$this->printer->echoln(array_shift($this->rockQuestions));
+	private function askQuestion() :void {
+		$questionToAsk = array_shift($this->{strtolower($this->currentCategory()).'Questions'});
+		$this->printer->echoln($questionToAsk);
 	}
 
 
-	function currentCategory() {
-		if ($this->places[$this->currentPlayer] == 0) return "Pop";
-		if ($this->places[$this->currentPlayer] == 4) return "Pop";
-		if ($this->places[$this->currentPlayer] == 8) return "Pop";
-		if ($this->places[$this->currentPlayer] == 1) return "Science";
-		if ($this->places[$this->currentPlayer] == 5) return "Science";
-		if ($this->places[$this->currentPlayer] == 9) return "Science";
-		if ($this->places[$this->currentPlayer] == 2) return "Sports";
-		if ($this->places[$this->currentPlayer] == 6) return "Sports";
-		if ($this->places[$this->currentPlayer] == 10) return "Sports";
-		return "Rock";
+	private function currentCategory() :string {
+		switch ($this->places[$this->currentPlayer]) {
+            case 0: case 4: case 8:
+                return "Pop";
+            case 1: case 5: case 9:
+                return "Science";
+            case 2: case 6: case 10:
+                return "Sports";
+            default:
+                return "Rock";
+        }
 	}
 
 	function wasCorrectlyAnswered() {
@@ -140,18 +131,15 @@ class Game {
 						. " Gold Coins.");
 
 				$winner = $this->didPlayerWin();
-				$this->currentPlayer++;
+                $this->currentPlayer++;
 				if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
 
-				return $winner;
+                return $winner;
 			} else {
-				$this->currentPlayer++;
+                $this->currentPlayer++;
 				if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
 				return true;
 			}
-
-
-
 		} else {
 
 			$this->printer->echoln("Answer was corrent!!!!");
@@ -167,20 +155,19 @@ class Game {
 
 			return $winner;
 		}
-	}
-
-	function wrongAnswer(){
+    }
+        
+	public function wrongAnswer(){
 		$this->printer->echoln("Question was incorrectly answered");
 		$this->printer->echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
-	$this->inPenaltyBox[$this->currentPlayer] = true;
+	    $this->inPenaltyBox[$this->currentPlayer] = true;
 
-		$this->currentPlayer++;
+        $this->currentPlayer++;
 		if ($this->currentPlayer == count($this->players)) $this->currentPlayer = 0;
 		return true;
 	}
 
-
-	function didPlayerWin() {
-		return !($this->purses[$this->currentPlayer] == 6);
+	private function didPlayerWin() :bool {
+		return !($this->purses[$this->currentPlayer] == self::SCORE_TO_WIN_GAME);
 	}
 }
