@@ -20,7 +20,7 @@ class Game {
     private $sportsQuestions = [];
     private $rockQuestions = [];
 
-    private $currentPlayer = 0;
+    private $currentPlayerIndex = 0;
     private $isGettingOutOfPenaltyBox;
 
     public function  __construct(
@@ -47,6 +47,10 @@ class Game {
     	}
     }
 
+    private function currentPlayer() :Player {
+        return $this->players[$this->currentPlayerIndex];
+    }
+
 	public function isPlayable() :bool {
 		return ($this->howManyPlayers() >= 2);
 	}
@@ -65,17 +69,17 @@ class Game {
 	}
 
 	public function roll($roll) :void {
-		$this->printer->echoln($this->players[$this->currentPlayer] . " is the current player");
+		$this->printer->echoln($this->currentPlayer() . " is the current player");
 		$this->printer->echoln("They have rolled a " . $roll);
 
-		if (!$this->players[$this->currentPlayer]->isAtPenaltyBox()) {
-            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-			if ($this->places[$this->currentPlayer] > 11) {
-                $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+		if (!$this->currentPlayer()->isAtPenaltyBox()) {
+            $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] + $roll;
+			if ($this->places[$this->currentPlayerIndex] > 11) {
+                $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] - 12;
             }
-			$this->printer->echoln($this->players[$this->currentPlayer]
+			$this->printer->echoln($this->currentPlayer()
 					. "'s new location is "
-					.$this->places[$this->currentPlayer]);
+					.$this->places[$this->currentPlayerIndex]);
 			$this->printer->echoln("The category is " . $this->currentCategory());
             $this->askQuestion();
             return;
@@ -83,18 +87,18 @@ class Game {
         if ($roll % 2 != 0) {
             $this->isGettingOutOfPenaltyBox = true;
 
-            $this->printer->echoln($this->players[$this->currentPlayer] . " is getting out of the penalty box");
-            $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] + $roll;
-            if ($this->places[$this->currentPlayer] > 11) $this->places[$this->currentPlayer] = $this->places[$this->currentPlayer] - 12;
+            $this->printer->echoln($this->currentPlayer() . " is getting out of the penalty box");
+            $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] + $roll;
+            if ($this->places[$this->currentPlayerIndex] > 11) $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] - 12;
 
-            $this->printer->echoln($this->players[$this->currentPlayer]
+            $this->printer->echoln($this->currentPlayer()
                     . "'s new location is "
-                    .$this->places[$this->currentPlayer]);
+                    .$this->places[$this->currentPlayerIndex]);
             $this->printer->echoln("The category is " . $this->currentCategory());
             $this->askQuestion();
             return;
         }
-        $this->printer->echoln($this->players[$this->currentPlayer] . " is not getting out of the penalty box");
+        $this->printer->echoln($this->currentPlayer() . " is not getting out of the penalty box");
         $this->isGettingOutOfPenaltyBox = false;
 	}
 
@@ -105,7 +109,7 @@ class Game {
 
 
 	private function currentCategory() :string {
-		switch ($this->places[$this->currentPlayer]) {
+		switch ($this->places[$this->currentPlayerIndex]) {
             case 0: case 4: case 8:
                 return "Pop";
             case 1: case 5: case 9:
@@ -118,19 +122,19 @@ class Game {
 	}
 
     private function moveToNextPlayerTurn() :void {
-        $this->currentPlayer++;
-        if ($this->currentPlayer == count($this->players)) {
-            $this->currentPlayer = 0;
+        $this->currentPlayerIndex++;
+        if ($this->currentPlayerIndex == count($this->players)) {
+            $this->currentPlayerIndex = 0;
         }
     }
 
 	public function wasCorrectlyAnswered() :bool {
-		if (!$this->players[$this->currentPlayer]->isAtPenaltyBox()) {
+		if (!$this->currentPlayer()->isAtPenaltyBox()) {
             $this->printer->echoln("Answer was corrent!!!!");
-            $this->purses[$this->currentPlayer]++;
-            $this->printer->echoln($this->players[$this->currentPlayer]
+            $this->purses[$this->currentPlayerIndex]++;
+            $this->printer->echoln($this->currentPlayer()
                     . " now has "
-                    .$this->purses[$this->currentPlayer]
+                    .$this->purses[$this->currentPlayerIndex]
                     . " Gold Coins.");    
             $winner = $this->didPlayerWin();
             $this->moveToNextPlayerTurn();
@@ -138,10 +142,10 @@ class Game {
         }
         if ($this->isGettingOutOfPenaltyBox) {
             $this->printer->echoln("Answer was correct!!!!");
-			$this->purses[$this->currentPlayer]++;
-            $this->printer->echoln($this->players[$this->currentPlayer]
+			$this->purses[$this->currentPlayerIndex]++;
+            $this->printer->echoln($this->currentPlayer()
                     . " now has "
-                    .$this->purses[$this->currentPlayer]
+                    .$this->purses[$this->currentPlayerIndex]
                     . " Gold Coins.");
 
             $winner = $this->didPlayerWin();
@@ -154,13 +158,13 @@ class Game {
         
 	public function wrongAnswer() :bool {
 		$this->printer->echoln("Question was incorrectly answered");
-		$this->printer->echoln($this->players[$this->currentPlayer] . " was sent to the penalty box");
-	    $this->players[$this->currentPlayer]->sendToPenaltyBox();
+		$this->printer->echoln($this->currentPlayer() . " was sent to the penalty box");
+	    $this->currentPlayer()->sendToPenaltyBox();
         $this->moveToNextPlayerTurn();
 		return true;
 	}
 
 	private function didPlayerWin() :bool {
-		return !($this->purses[$this->currentPlayer] == self::SCORE_TO_WIN_GAME);
+		return !($this->purses[$this->currentPlayerIndex] == self::SCORE_TO_WIN_GAME);
 	}
 }
