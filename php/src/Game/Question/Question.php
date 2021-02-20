@@ -2,7 +2,6 @@
 namespace Trivia\Game\Question;
 
 use InvalidArgumentException;
-use Trivia\Game\Printer\IPrinter;
 
 class Question {
     private $value;
