@@ -68,12 +68,12 @@ class Game {
 		return count($this->players);
 	}
 
-	public function roll($roll) :void {
+	public function roll(int $rolledValue) :void {
 		$this->printer->echoln($this->currentPlayer() . " is the current player");
-		$this->printer->echoln("They have rolled a " . $roll);
+		$this->printer->echoln("They have rolled a " . $rolledValue);
 
 		if (!$this->currentPlayer()->isAtPenaltyBox()) {
-            $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] + $roll;
+            $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] + $rolledValue;
 			if ($this->places[$this->currentPlayerIndex] > 11) {
                 $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] - 12;
             }
@@ -84,11 +84,11 @@ class Game {
             $this->askQuestion();
             return;
         }
-        if ($roll % 2 != 0) {
+        if ($rolledValue % 2 != 0) {
             $this->isGettingOutOfPenaltyBox = true;
 
             $this->printer->echoln($this->currentPlayer() . " is getting out of the penalty box");
-            $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] + $roll;
+            $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] + $rolledValue;
             if ($this->places[$this->currentPlayerIndex] > 11) $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] - 12;
 
             $this->printer->echoln($this->currentPlayer()
