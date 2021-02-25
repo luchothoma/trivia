@@ -123,7 +123,7 @@ class Game {
     public function wasCorrectlyAnswered() :bool {
         $player = $this->currentPlayer();
 		if (!$player->isAtPenaltyBox()) {
-            $this->printer->echoln("Answer was corrent!!!!");
+            $this->printer->echoln("Answer was correct!!!!");
             $player->questionAnsweredWell();
             $this->printer->echoln($player
                     . " now has "

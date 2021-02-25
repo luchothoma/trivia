@@ -9,84 +9,84 @@ They have rolled a 6
 Tylor's new location is 6
 The category is Sports
 Sports Question 0
-Answer was corrent!!!!
+Answer was correct!!!!
 Tylor now has 1 Gold Coins.
 Jhon is the current player
 They have rolled a 4
 Jhon's new location is 4
 The category is Pop
 Pop Question 0
-Answer was corrent!!!!
+Answer was correct!!!!
 Jhon now has 1 Gold Coins.
 Leandro is the current player
 They have rolled a 6
 Leandro's new location is 6
 The category is Sports
 Sports Question 1
-Answer was corrent!!!!
+Answer was correct!!!!
 Leandro now has 1 Gold Coins.
 Tylor is the current player
 They have rolled a 1
 Tylor's new location is 7
 The category is Rock
 Rock Question 0
-Answer was corrent!!!!
+Answer was correct!!!!
 Tylor now has 2 Gold Coins.
 Jhon is the current player
 They have rolled a 1
 Jhon's new location is 5
 The category is Science
 Science Question 0
-Answer was corrent!!!!
+Answer was correct!!!!
 Jhon now has 2 Gold Coins.
 Leandro is the current player
 They have rolled a 1
 Leandro's new location is 7
 The category is Rock
 Rock Question 1
-Answer was corrent!!!!
+Answer was correct!!!!
 Leandro now has 2 Gold Coins.
 Tylor is the current player
 They have rolled a 5
 Tylor's new location is 0
 The category is Pop
 Pop Question 1
-Answer was corrent!!!!
+Answer was correct!!!!
 Tylor now has 3 Gold Coins.
 Jhon is the current player
 They have rolled a 4
 Jhon's new location is 9
 The category is Science
 Science Question 1
-Answer was corrent!!!!
+Answer was correct!!!!
 Jhon now has 3 Gold Coins.
 Leandro is the current player
 They have rolled a 6
 Leandro's new location is 1
 The category is Science
 Science Question 2
-Answer was corrent!!!!
+Answer was correct!!!!
 Leandro now has 3 Gold Coins.
 Tylor is the current player
 They have rolled a 1
 Tylor's new location is 1
 The category is Science
 Science Question 3
-Answer was corrent!!!!
+Answer was correct!!!!
 Tylor now has 4 Gold Coins.
 Jhon is the current player
 They have rolled a 6
 Jhon's new location is 3
 The category is Rock
 Rock Question 2
-Answer was corrent!!!!
+Answer was correct!!!!
 Jhon now has 4 Gold Coins.
 Leandro is the current player
 They have rolled a 2
 Leandro's new location is 3
 The category is Rock
 Rock Question 3
-Answer was corrent!!!!
+Answer was correct!!!!
 Leandro now has 4 Gold Coins.
 Tylor is the current player
 They have rolled a 2
@@ -100,14 +100,14 @@ They have rolled a 3
 Jhon's new location is 6
 The category is Sports
 Sports Question 2
-Answer was corrent!!!!
+Answer was correct!!!!
 Jhon now has 5 Gold Coins.
 Leandro is the current player
 They have rolled a 4
 Leandro's new location is 7
 The category is Rock
 Rock Question 5
-Answer was corrent!!!!
+Answer was correct!!!!
 Leandro now has 5 Gold Coins.
 Tylor is the current player
 They have rolled a 1
@@ -122,5 +122,5 @@ They have rolled a 6
 Jhon's new location is 0
 The category is Pop
 Pop Question 3
-Answer was corrent!!!!
+Answer was correct!!!!
 Jhon now has 6 Gold Coins.
