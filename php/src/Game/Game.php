@@ -12,8 +12,7 @@ class Game {
     private $printer = null;
 
     private $players = [];
-    private $places;
-    private $purses;
+    private $places = [0];
 
     private $popQuestions = [];
     private $scienceQuestions = [];
@@ -27,12 +26,6 @@ class Game {
         IPrinter $printer
     ){
         $this->printer = $printer;
-        $this->initialize();
-    }
-
-    private function initialize() :void {
-        $this->places = array(0);
-        $this->purses  = array(0);
         $this->initializeQuestions();
     }
 
@@ -59,7 +52,6 @@ class Game {
         $player = Player::FromScalarValue($this->howManyPlayers(), $playerName);
         array_push($this->players, $player);
         $this->places[$this->howManyPlayers()] = 0;
-        $this->purses[$this->howManyPlayers()] = 0;
         $this->printer->echoln($playerName . " was added");
         $this->printer->echoln("They are player number " . count($this->players));
 	}
@@ -128,29 +120,30 @@ class Game {
         }
     }
 
-	public function wasCorrectlyAnswered() :bool {
-		if (!$this->currentPlayer()->isAtPenaltyBox()) {
+    public function wasCorrectlyAnswered() :bool {
+        $player = $this->currentPlayer();
+		if (!$player->isAtPenaltyBox()) {
             $this->printer->echoln("Answer was corrent!!!!");
-            $this->purses[$this->currentPlayerIndex]++;
-            $this->printer->echoln($this->currentPlayer()
+            $player->questionAnsweredWell();
+            $this->printer->echoln($player
                     . " now has "
-                    .$this->purses[$this->currentPlayerIndex]
+                    .$player->points()
                     . " Gold Coins.");    
-            $winner = $this->didPlayerWin();
+            $isTheWinner = $this->didPlayerWin($player);
             $this->moveToNextPlayerTurn();
-            return $winner;
+            return !$isTheWinner;
         }
         if ($this->isGettingOutOfPenaltyBox) {
             $this->printer->echoln("Answer was correct!!!!");
-			$this->purses[$this->currentPlayerIndex]++;
-            $this->printer->echoln($this->currentPlayer()
+			$player->questionAnsweredWell();
+            $this->printer->echoln($player
                     . " now has "
-                    .$this->purses[$this->currentPlayerIndex]
+                    .$player->points()
                     . " Gold Coins.");
 
-            $winner = $this->didPlayerWin();
+            $isTheWinner = $this->didPlayerWin($player);
             $this->moveToNextPlayerTurn();
-            return $winner;
+            return !$isTheWinner;
         }
         $this->moveToNextPlayerTurn();
         return true;
@@ -164,7 +157,7 @@ class Game {
 		return true;
 	}
 
-	private function didPlayerWin() :bool {
-		return !($this->purses[$this->currentPlayerIndex] == self::SCORE_TO_WIN_GAME);
+	private function didPlayerWin(Player $player) :bool {
+		return $player->reachScore(self::SCORE_TO_WIN_GAME);
 	}
 }
