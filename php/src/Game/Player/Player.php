@@ -4,6 +4,7 @@ namespace Trivia\Game\Player;
 use InvalidArgumentException;
 
 class Player {
+    private const INITIAL_POSITION = 0;
     private const INITIAL_POINTS = 0;
     private const POINTS_PER_QUESTION = 1;
 
@@ -11,12 +12,14 @@ class Player {
     private $name;
     private $isAtPenaltyBox;
     private $points;
+    private $position;
 
     public function __construct(PlayerId $id, PlayerName $name) {
         $this->id = $id;
         $this->name = $name;
         $this->isAtPenaltyBox = PenaltyBoxState::Out();
         $this->points = self::INITIAL_POINTS;
+        $this->position = self::INITIAL_POSITION;
     }
     public static  function FromScalarValue(int $id, string $name) :self {
         return new self(new PlayerId($id), new PlayerName($name));
@@ -38,6 +41,16 @@ class Player {
     }
     public function reachScore(int $score) :bool {
         return $this->points === $score;
+    }
+    public function position() :int {
+        return $this->position;
+    }
+    public function increasePosition(int $numberOfPositionsToMove) :void {
+        $newPosition = $this->position + $numberOfPositionsToMove;
+        if ($newPosition > 11) {
+            $newPosition -= 12;
+        }
+        $this->position = $newPosition;
     }
     public function value() :string {
         return $this->value;

@@ -13,7 +13,6 @@ class Game {
     private $printer = null;
 
     private $players = [];
-    private $places = [0];
 
     private $popQuestions = [];
     private $scienceQuestions = [];
@@ -51,7 +50,6 @@ class Game {
 	public function add(string $playerName) :void {
         $player = Player::FromScalarValue($this->howManyPlayers(), $playerName);
         array_push($this->players, $player);
-        $this->places[$this->howManyPlayers()] = 0;
         $this->printer->echoln($playerName . " was added");
         $this->printer->echoln("They are player number " . count($this->players));
 	}
@@ -66,13 +64,10 @@ class Game {
 		$this->printer->echoln("They have rolled a " . $rolledValue);
 
 		if (!$player->isAtPenaltyBox()) {
-            $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] + $rolledValue;
-			if ($this->places[$this->currentPlayerIndex] > 11) {
-                $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] - 12;
-            }
+            $player->increasePosition($rolledValue);
 			$this->printer->echoln($player
 					. "'s new location is "
-					.$this->places[$this->currentPlayerIndex]);
+					.$player->position());
 			$this->printer->echoln("The category is " . $this->currentCategory());
             $this->askQuestion();
             return;
@@ -81,12 +76,10 @@ class Game {
             $this->isGettingOutOfPenaltyBox = true;
 
             $this->printer->echoln($player . " is getting out of the penalty box");
-            $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] + $rolledValue;
-            if ($this->places[$this->currentPlayerIndex] > 11) $this->places[$this->currentPlayerIndex] = $this->places[$this->currentPlayerIndex] - 12;
-
+            $player->increasePosition($rolledValue);
             $this->printer->echoln($player
                     . "'s new location is "
-                    .$this->places[$this->currentPlayerIndex]);
+                    .$player->position());
             $this->printer->echoln("The category is " . $this->currentCategory());
             $this->askQuestion();
             return;
@@ -101,7 +94,8 @@ class Game {
 	}
 
 	private function currentCategory() :string {
-		switch ($this->places[$this->currentPlayerIndex]) {
+        $player = $this->currentPlayer();
+		switch ($player->position()) {
             case 0: case 4: case 8:
                 return "Pop";
             case 1: case 5: case 9:
