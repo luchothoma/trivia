@@ -8,6 +8,7 @@ use Trivia\Game\Question\QuestionMaker;
 
 class Game {
     private const SCORE_TO_WIN_GAME = 6;
+    private const NUMBER_OF_QUESTIONS_PER_CATEGORY = 50;
 
     private $printer = null;
 
@@ -20,18 +21,17 @@ class Game {
     private $rockQuestions = [];
 
     private $currentPlayerIndex = 0;
-    private $isGettingOutOfPenaltyBox;
+    private $isGettingOutOfPenaltyBox = false;
 
     public function  __construct(
         IPrinter $printer
     ){
         $this->printer = $printer;
-        $this->initializeQuestions();
+        $this->initializeQuestions(self::NUMBER_OF_QUESTIONS_PER_CATEGORY);
     }
 
-    private function initializeQuestions() :void {
-        for ($i = 0; $i < 50; $i++) {
-            $questionNumber = $i;
+    private function initializeQuestions(int $numberOfQuestions) :void {
+        foreach(range(0, ($numberOfQuestions-1)) as $questionNumber) {
             $questionContent = " Question {$questionNumber}";
 			array_push($this->popQuestions, QuestionMaker::create(QuestionType::Pop(), $questionContent));
 			array_push($this->scienceQuestions, QuestionMaker::create(QuestionType::Science(), $questionContent));
