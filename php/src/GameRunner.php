@@ -31,11 +31,10 @@ class GameRunner {
 
             $isAnswerWrong = $this->gameDataObtainer->isAnswerWrong();
             $this->printer->echoln("AnswerIsWrong: ".($isAnswerWrong? 'true': 'false'));
-            if ($isAnswerWrong) {
-                $notAWinner = $this->game->wrongAnswer();
-            } else {
-                $notAWinner = $this->game->wasCorrectlyAnswered();
-            }
-        } while ($notAWinner);
+            $hasTheUserWon =
+                $isAnswerWrong?
+                $this->game->wrongAnswer():
+                $this->game->wasCorrectlyAnswered();
+        } while (!$hasTheUserWon);
     }
 }

@@ -9,6 +9,8 @@ use Trivia\Game\Question\QuestionMaker;
 class Game {
     private const SCORE_TO_WIN_GAME = 6;
     private const NUMBER_OF_QUESTIONS_PER_CATEGORY = 50;
+    private const PLAYER_IS_A_WINNER = true;
+    private const PLAYER_IS_NOT_A_WINNER = !self::PLAYER_IS_A_WINNER;
 
     private $printer = null;
 
@@ -125,10 +127,10 @@ class Game {
                     . " Gold Coins.");    
             $isTheWinner = $this->didPlayerWin($player);
             $this->moveToNextPlayerTurn();
-            return !$isTheWinner;
+            return $isTheWinner? self::PLAYER_IS_A_WINNER: self::PLAYER_IS_NOT_A_WINNER;
         }
         $this->moveToNextPlayerTurn();
-        return true;
+        return self::PLAYER_IS_NOT_A_WINNER;
     }
         
 	public function wrongAnswer() :bool {
@@ -137,7 +139,7 @@ class Game {
 		$this->printer->echoln($player . " was sent to the penalty box");
 	    $player->sendToPenaltyBox();
         $this->moveToNextPlayerTurn();
-		return true;
+		return self::PLAYER_IS_NOT_A_WINNER;
 	}
 
 	private function didPlayerWin(Player $player) :bool {
