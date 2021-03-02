@@ -64,31 +64,31 @@ class Game {
         $player = $this->currentPlayer();
 		$this->printer->echoln($player . " is the current player");
 		$this->printer->echoln("They have rolled a " . $rolledValue);
-
 		if (!$player->isAtPenaltyBox()) {
-            $player->increasePosition($rolledValue);
-			$this->printer->echoln($player
-					. "'s new location is "
-					.$player->position());
-			$this->printer->echoln("The category is " . $this->currentCategory());
-            $this->askQuestion();
+            $this->increasePlayerPoints($player, $rolledValue);
+            $this->makePlayerOtherQuestion();
             return;
         }
         if ($rolledValue % 2 != 0) {
             $this->isGettingOutOfPenaltyBox = true;
-
             $this->printer->echoln($player . " is getting out of the penalty box");
-            $player->increasePosition($rolledValue);
-            $this->printer->echoln($player
-                    . "'s new location is "
-                    .$player->position());
-            $this->printer->echoln("The category is " . $this->currentCategory());
-            $this->askQuestion();
+            $this->increasePlayerPoints($player, $rolledValue);
+            $this->makePlayerOtherQuestion();
             return;
         }
         $this->printer->echoln($player . " is not getting out of the penalty box");
         $this->isGettingOutOfPenaltyBox = false;
 	}
+
+    private function increasePlayerPoints(Player $player, int $rolledValue) :void {
+        $player->increasePosition($rolledValue);
+        $this->printer->echoln($player . "'s new location is " . $player->position());
+    }
+
+    private function makePlayerOtherQuestion() :void {
+        $this->printer->echoln("The category is " . $this->currentCategory());
+        $this->askQuestion();
+    }
 
 	private function askQuestion() :void {
 		$questionToAsk = array_shift($this->{strtolower($this->currentCategory()).'Questions'});
